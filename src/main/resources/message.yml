@@ -1,0 +1,32 @@
+prefix: "&8[&6AutoRestart&8]&7 "
+
+restart:
+  kick: "Server is restarting. Please wait a little..."
+  countdown:
+    message: "&cThe server will restart in %time% seconds."
+    bossbar: "&eThe server will restart in %time% seconds"
+
+command:
+  cancel: "Restart has been cancelled."
+  check:
+    scheduled: "Restart has been scheduled at &b%time%"
+    not-scheduled: "Restart is not scheduled."
+  now: "Restart the server now."
+  reload: "AutoRestart is reloading... Please check the server console."
+  second: "&cThe server will restart in &b%time% seconds"
+  time: "&cThe server will restart at &b%time%"
+  no-permission: "You don't have the permission: &b%perm%"
+  invalid-arg: "Invalid argument: &b%arg%"
+  help:
+    - "&8&m==================&e AutoRestart &8&m=================="
+    - "&7 command: &b/autorestart &7(Alias: &b/are&7)"
+    - "&7 "
+    - "&b /are cancel&8: &7Cancel restart task"
+    - "&b /are check&8: &7Check the next restart"
+    - "&b /are help&8: &7Show this help"
+    - "&b /are now&8: &7Restart server now"
+    - "&b /are reload&8: &7Reload config.yml and message.yml"
+    - "&b /are reschedule&8: &7Schedule the next auto restart"
+    - "&b /are second {seconds}&8: &7Schedule the restart task"
+    - "&b /are time {HH:mm}&8: &7Schedule the restart task"
+    - "&7 "

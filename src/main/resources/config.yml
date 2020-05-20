@@ -1,0 +1,20 @@
+restart:
+  command: "restart"
+  commands-before: []
+  default-notice-time: 60
+  enable-bossbar: true
+  kick-before: true
+  seconds-to-broadcast:
+    - 60
+    - 30
+    - 10
+    - 5
+    - 4
+    - 3
+    - 2
+    - 1
+  auto:
+    time:
+      - "06:00" # HH:mm
+
+

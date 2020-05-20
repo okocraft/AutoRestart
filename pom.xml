@@ -11,17 +11,9 @@
     <name>AutoRestart</name>
     <url>https://github.com/okocraft/AutoRestart</url>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-okocraft-maven-repo</id>
-            <name>okocraft-maven-repo</name>
-            <url>https://api.bintray.com/maven/okocraft/maven-repo/AutoRestart/;publish=1</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <project.charset>UTF-8</project.charset>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>${project.charset}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${project.charset}</project.reporting.outputEncoding>
     </properties>
@@ -47,7 +39,7 @@
         <dependency>
             <groupId>com.github.siroshun09.configapi</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2</version>
+            <version>1.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -83,7 +75,6 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <finalName>${project.name}-${project.version}</finalName>
                     <archive>
                         <manifest>
                             <addDefaultEntries>false</addDefaultEntries>
@@ -95,23 +86,11 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
+                    <finalName>${project.name}-${project.version}</finalName>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -121,6 +100,12 @@
                         </filter>
                     </filters>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.github.siroshun09.configapi</pattern>
+                            <shadedPattern>net.okocraft.autorestart.lib.configapi</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -131,38 +116,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <author>true</author>
-                    <show>protected</show>
-                    <source>${java.version}</source>
-                    <encoding>${project.charset}</encoding>
-                    <charset>${project.charset}</charset>
-                    <docencoding>${project.charset}</docencoding>
-                    <destDir>docs</destDir>
-                    <detectJavaApiLink>false</detectJavaApiLink>
-                    <notimestamp>true</notimestamp>
-                    <bottom>
-                        <![CDATA[<p class="legalCopy">Copyright &#169; 2020 <a href="https://github.com/Siroshun09">Siroshun09</a>. All rights reserved.</p>]]></bottom>
-                    <links>
-                        <link>https://hub.spigotmc.org/javadocs/spigot/</link>
-                        <link>https://siroplugins.github.io/ConfigAPI/</link>
-                    </links>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 </project>

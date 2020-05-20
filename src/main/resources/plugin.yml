@@ -1,0 +1,35 @@
+name: AutoRestart
+main: net.okocraft.autorestart.AutoRestartPlugin
+version: ${project.version}
+api-version: "1.15"
+author: Siroshun09
+commands:
+  autorestart:
+    aliases: [are]
+permissions:
+  autorestart.*:
+    children:
+      - "autorestart.cancel"
+      - "autorestart.check"
+      - "autorestart.help"
+      - "autorestart.now"
+      - "autorestart.reload"
+      - "autorestart.reschedule"
+      - "autorestart.second"
+      - "autorestart.time"
+  autorestart.cancel:
+    default: op
+  autorestart.check:
+    default: op
+  autorestart.help:
+    default: op
+  autorestart.now:
+    default: op
+  autorestart.reload:
+    default: op
+  autorestart.reschedule:
+    default: op
+  autorestart.second:
+    default: op
+  autorestart.time:
+    default: op
