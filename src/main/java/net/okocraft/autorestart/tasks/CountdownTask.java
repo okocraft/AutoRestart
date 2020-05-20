@@ -19,18 +19,14 @@ public class CountdownTask implements Runnable {
             plugin.getServer().getScheduler().runTask(plugin, () -> plugin.getTimer().start(time));
         }
 
+        checkBroadcastTime();
         plugin.scheduleTask(this::count, 1);
     }
 
     private void count() {
         time--;
         if (0 < time) {
-
-            if (plugin.getGeneralConfig().getSecondsToBroadcast().contains(time)) {
-                String message = plugin.getMessageConfig().getCountdownMessage(time);
-                plugin.getServer().broadcastMessage(message);
-            }
-
+            checkBroadcastTime();
             plugin.getServer().getScheduler().runTask(plugin, this::checkBar);
             plugin.scheduleTask(this::count, 1);
         } else {
@@ -42,5 +38,12 @@ public class CountdownTask implements Runnable {
         if (plugin.getTimer().isRunning()) {
             plugin.getTimer().update();
         }
+    }
+
+    private void checkBroadcastTime() {
+            if (plugin.getGeneralConfig().getSecondsToBroadcast().contains(time)) {
+                String message = plugin.getMessageConfig().getCountdownMessage(time);
+                plugin.getServer().broadcastMessage(message);
+            }
     }
 }
