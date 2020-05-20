@@ -16,5 +16,3 @@ restart:
   auto:
     time:
       - "06:00" # HH:mm
-
-
