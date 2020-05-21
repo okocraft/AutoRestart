@@ -157,18 +157,17 @@ public class AutoRestartPlugin extends JavaPlugin {
     }
 
     public void cancelAllTask() {
-        int num = tasks.size();
+        if (0 < tasks.size()) {
+            tasks.forEach(this::cancelTask);
 
-        tasks.forEach(this::cancelTask);
-        tasks.clear();
+            tasks.clear();
 
-        if (timer.isRunning()) {
-            timer.stop();
-        }
+            if (timer.isRunning()) {
+                timer.stop();
+            }
 
-        restartTime = null;
+            restartTime = null;
 
-        if (0 < num) {
             getLogger().info("Restart task was cancelled.");
         }
     }
