@@ -5,6 +5,7 @@ import net.okocraft.autorestart.config.GeneralConfig;
 import net.okocraft.autorestart.config.MessageConfig;
 import net.okocraft.autorestart.tasks.CountdownTask;
 import net.okocraft.autorestart.timer.BossBarTimer;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,7 +49,7 @@ public class AutoRestartPlugin extends JavaPlugin {
 
         scheduleRestarting();
 
-        Optional.ofNullable(getCommand("autorestart")).ifPresent(cmd -> cmd.setExecutor(new AutoRestartCommand(this)));
+        Optional.ofNullable(getCommand("autorestart")).ifPresent(this::registerCommand);
 
         long finish = getTimeMillis();
         getLogger().info("Enabled plugin in " + (finish - start) + "ms.");
@@ -170,6 +171,10 @@ public class AutoRestartPlugin extends JavaPlugin {
         if (0 < num) {
             getLogger().info("Restart task was cancelled.");
         }
+    }
+
+    private void registerCommand(@NotNull PluginCommand command) {
+        command.setExecutor(new AutoRestartCommand(this));
     }
 
     private void cancelTask(@NotNull ScheduledFuture<?> task) {
