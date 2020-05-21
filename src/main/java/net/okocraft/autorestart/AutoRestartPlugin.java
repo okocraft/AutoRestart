@@ -33,31 +33,29 @@ public class AutoRestartPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        long start = getTimeMillis();
+        long startTime = getTimeMillis();
 
         generalConfig = new GeneralConfig(this);
         messageConfig = new MessageConfig(this);
         getLogger().info("Loaded config.yml and messages.yml");
 
-        long finish = getTimeMillis();
-        getLogger().info("Loaded plugin in " + (finish - start) + "ms.");
+        getLogger().info("Loaded plugin in " + (getTimeMillis() - startTime) + "ms.");
     }
 
     @Override
     public void onEnable() {
-        long start = getTimeMillis();
+        long startTime = getTimeMillis();
 
         scheduleRestarting();
 
         Optional.ofNullable(getCommand("autorestart")).ifPresent(this::registerCommand);
 
-        long finish = getTimeMillis();
-        getLogger().info("Enabled plugin in " + (finish - start) + "ms.");
+        getLogger().info("Enabled plugin in " + (getTimeMillis() - startTime) + "ms.");
     }
 
     @Override
     public void onDisable() {
-        long start = getTimeMillis();
+        long startTime = getTimeMillis();
 
         cancelAllTask();
 
@@ -65,14 +63,13 @@ public class AutoRestartPlugin extends JavaPlugin {
             scheduler.shutdownNow();
         }
 
-        long finish = getTimeMillis();
-        getLogger().info("Disabled plugin in " + (finish - start) + "ms.");
+        getLogger().info("Disabled plugin in " + (getTimeMillis() - startTime) + "ms.");
     }
 
     public void reload() {
         checkRunning();
 
-        long start = getTimeMillis();
+        long startTime = getTimeMillis();
         getLogger().info("Reloading...");
 
         cancelAllTask();
@@ -85,8 +82,7 @@ public class AutoRestartPlugin extends JavaPlugin {
 
         scheduleRestarting();
 
-        long finish = getTimeMillis();
-        getLogger().info("Reloaded plugin in " + (finish - start) + "ms.");
+        getLogger().info("Reloaded plugin in " + (getTimeMillis() - startTime) + "ms.");
     }
 
     @NotNull
