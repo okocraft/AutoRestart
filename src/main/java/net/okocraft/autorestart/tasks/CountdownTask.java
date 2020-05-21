@@ -16,7 +16,7 @@ public class CountdownTask implements Runnable {
     @Override
     public void run() {
         if (plugin.getGeneralConfig().isBossBarEnabled()) {
-            plugin.getServer().getScheduler().runTask(plugin, () -> plugin.getTimer().start(time));
+            plugin.getTimer().start(time);
         }
 
         checkBroadcastTime();
@@ -25,25 +25,24 @@ public class CountdownTask implements Runnable {
 
     private void count() {
         time--;
+
         if (0 < time) {
             checkBroadcastTime();
-            plugin.getServer().getScheduler().runTask(plugin, this::checkBar);
+
+            if (plugin.getTimer().isRunning()) {
+                plugin.getTimer().update();
+            }
+
             plugin.scheduleTask(this::count, 1);
         } else {
             plugin.getServer().getScheduler().runTask(plugin, new RestartTask(plugin));
         }
     }
 
-    private void checkBar() {
-        if (plugin.getTimer().isRunning()) {
-            plugin.getTimer().update();
-        }
-    }
-
     private void checkBroadcastTime() {
-            if (plugin.getGeneralConfig().getSecondsToBroadcast().contains(time)) {
-                String message = plugin.getMessageConfig().getCountdownMessage(time);
-                plugin.getServer().broadcastMessage(message);
-            }
+        if (plugin.getGeneralConfig().getSecondsToBroadcast().contains(time)) {
+            String message = plugin.getMessageConfig().getCountdownMessage(time);
+            plugin.getServer().broadcastMessage(message);
+        }
     }
 }

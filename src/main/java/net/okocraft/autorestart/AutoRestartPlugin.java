@@ -47,6 +47,7 @@ public class AutoRestartPlugin extends JavaPlugin {
         long start = getTimeMillis();
 
         scheduleRestarting();
+
         Optional.ofNullable(getCommand("autorestart")).ifPresent(cmd -> cmd.setExecutor(new AutoRestartCommand(this)));
 
         long finish = getTimeMillis();
@@ -77,6 +78,7 @@ public class AutoRestartPlugin extends JavaPlugin {
 
         generalConfig.reload();
         getLogger().info("config.yml was reloaded.");
+
         messageConfig.reload();
         getLogger().info("message.yml was reloaded.");
 
@@ -111,20 +113,27 @@ public class AutoRestartPlugin extends JavaPlugin {
 
     public void scheduleRestarting(long seconds) {
         cancelAllTask();
+
         CountdownTask task = new CountdownTask(this, seconds);
+
         scheduleTask(task, 0L);
+
         restartTime = LocalDateTime.now().plusSeconds(seconds);
+
         getLogger().info("Restart scheduled: " + getRestartTimeAsString());
     }
 
     public void scheduleRestarting() {
         cancelAllTask();
         restartTime = generalConfig.getNextAutoRestartTime();
+
         if (restartTime == null) {
             getLogger().info("Auto restart is not scheduled.");
         } else {
             long noticeTime = generalConfig.getDefaultNoticeTime();
+
             CountdownTask task = new CountdownTask(this, noticeTime);
+
             Duration duration = Duration.between(LocalDateTime.now(), restartTime.minusSeconds(noticeTime));
 
             scheduleTask(task, duration.getSeconds());
@@ -147,6 +156,8 @@ public class AutoRestartPlugin extends JavaPlugin {
     }
 
     public void cancelAllTask() {
+        int num = tasks.size();
+
         tasks.forEach(this::cancelTask);
         tasks.clear();
 
@@ -156,7 +167,9 @@ public class AutoRestartPlugin extends JavaPlugin {
 
         restartTime = null;
 
-        getLogger().info("Restart task was cancelled.");
+        if (0 < num) {
+            getLogger().info("Restart task was cancelled.");
+        }
     }
 
     private void cancelTask(@NotNull ScheduledFuture<?> task) {

@@ -64,7 +64,7 @@ public class MessageConfig extends BukkitConfig {
 
     @NotNull
     public String getRestartSecondMessage(long second) {
-        return colorize(getPrefix() + getString("command.second", "&cThe server will restart in &b%time% seconds")
+        return colorize(getPrefix() + getString("command.restart", "&cThe server will restart in &b%time% seconds")
                 .replace("%time%", String.valueOf(second)));
     }
 
@@ -99,7 +99,7 @@ public class MessageConfig extends BukkitConfig {
                         "&b /are now&8: &7Restart server now",
                         "&b /are reload&8: &7Reload config.yml and message.yml",
                         "&b /are reschedule&8: &7Schedule the next auto restart",
-                        "&b /are schedule {seconds}&8: &7Schedule the restart task",
+                        "&b /are restart {seconds}&8: &7Schedule the restart task",
                         "&b /are time {HH:mm}&8: &7Schedule the restart task",
                         "&7 "))));
     }

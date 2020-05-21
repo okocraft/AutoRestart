@@ -50,7 +50,7 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
             case "reschedule":
                 rescheduleRestarting(sender);
                 break;
-            case "second":
+            case "restart":
                 scheduleRestartingSecond(sender, args);
                 break;
             case "time":
@@ -69,7 +69,7 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(
                     args[0].toLowerCase(),
-                    List.of("cancel", "check", "help", "now", "reload", "reschedule", "second", "time"),
+                    List.of("cancel", "check", "help", "now", "reload", "reschedule", "restart", "time"),
                     new ArrayList<>()
             );
         } else {
@@ -102,6 +102,7 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
 
     private void restartNow(@NotNull CommandSender sender) {
         if (checkPermission(sender, "autorestart.now")) {
+            plugin.cancelAllTask();
             plugin.getServer().getScheduler().runTask(plugin, new RestartTask(plugin));
             sender.sendMessage(plugin.getMessageConfig().getRestartNowMessage());
         }
@@ -115,7 +116,7 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
     }
 
     private void scheduleRestartingSecond(@NotNull CommandSender sender, @NotNull String[] args) {
-        if (!checkPermission(sender, "autorestart.schedule")) {
+        if (!checkPermission(sender, "autorestart.restart")) {
             return;
         }
 
@@ -136,8 +137,11 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (!plugin.getGeneralConfig().getSecondsToBroadcast().contains(seconds)) {
+            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartSecondMessage(seconds));
+        }
+
         plugin.scheduleRestarting(seconds);
-        plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartSecondMessage(seconds));
     }
 
     private void scheduleRestartingTime(@NotNull CommandSender sender, @NotNull String[] args) {
@@ -148,6 +152,8 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
         LocalDateTime restartTime;
         if (args.length < 2) {
             restartTime = plugin.getGeneralConfig().getNextAutoRestartTime();
+            restartTime = restartTime != null ? restartTime :
+                    LocalDateTime.now().plusSeconds(plugin.getGeneralConfig().getDefaultNoticeTime());
         } else {
             try {
                 LocalTime time = LocalTime.parse(args[1], DateTimeFormatter.ofPattern("HH:mm"));
@@ -163,8 +169,12 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
             duration += 86400;
         }
 
+
         plugin.scheduleRestarting(duration);
-        plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartTimeMessage());
+
+        if (!plugin.getGeneralConfig().getSecondsToBroadcast().contains(duration)) {
+            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartTimeMessage());
+        }
     }
 
     private void sendRestartTime(@NotNull CommandSender sender) {

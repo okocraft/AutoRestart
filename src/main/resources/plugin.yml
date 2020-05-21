@@ -8,6 +8,7 @@ commands:
     aliases: [are]
 permissions:
   autorestart.*:
+    default: op
     children:
       - "autorestart.cancel"
       - "autorestart.check"
@@ -15,7 +16,7 @@ permissions:
       - "autorestart.now"
       - "autorestart.reload"
       - "autorestart.reschedule"
-      - "autorestart.second"
+      - "autorestart.restart"
       - "autorestart.time"
   autorestart.cancel:
     default: op
@@ -29,7 +30,7 @@ permissions:
     default: op
   autorestart.reschedule:
     default: op
-  autorestart.second:
+  autorestart.restart:
     default: op
   autorestart.time:
     default: op
