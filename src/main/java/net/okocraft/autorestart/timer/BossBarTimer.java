@@ -65,6 +65,6 @@ public class BossBarTimer {
 
     @NotNull
     private String getTitle() {
-        return plugin.getMessageConfig().getCountdownBarTitle(remaining);
+        return plugin.getMessageConfig().getCountdownBarTitle(remaining, plugin.getFormattedRestartReason());
     }
 }

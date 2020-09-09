@@ -35,7 +35,7 @@ public class RestartTask implements Runnable {
 
     private void kickPlayers() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            player.kickPlayer(plugin.getMessageConfig().getKickMessage());
+            player.kickPlayer(plugin.getMessageConfig().getKickMessage(plugin.getFormattedRestartReason()));
         }
     }
 }

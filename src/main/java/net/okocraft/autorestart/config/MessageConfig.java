@@ -17,21 +17,37 @@ public class MessageConfig extends BukkitConfig {
     }
 
     @NotNull
-    public String getKickMessage() {
-        return colorize(getString("restart.kick", "Server is restarting. Please wait a little..."));
+    public String getKickMessage(@NotNull String reason) {
+        return colorize(getString("restart.kick", "Server is restarting. Please wait a little...")
+                .replace("%reason%", reason)
+        );
     }
 
     @NotNull
-    public String getCountdownMessage(long seconds) {
+    public String getFormattedReason(@NotNull String reason) {
+        return colorize(getString("restart.reason.format", "&7[&b%reason%&7]").replace("%reason%", reason));
+    }
+
+    @NotNull
+    public String getScheduledRestartReason() {
+        return colorize(getString("restart.reason.scheduled-restart", "Scheduled Restart"));
+    }
+
+    @NotNull
+    public String getCountdownMessage(long seconds, @NotNull String reason) {
         return colorize(getPrefix() +
                 getString("restart.countdown.message", "The server will restart in %time% seconds.")
-                        .replace("%time%", String.valueOf(seconds)));
+                        .replace("%time%", String.valueOf(seconds))
+                        .replace("%reason%", reason)
+        );
     }
 
     @NotNull
-    public String getCountdownBarTitle(long seconds) {
+    public String getCountdownBarTitle(long seconds, @NotNull String reason) {
         return colorize(getString("restart.countdown.bossbar", "&eThe server will restart in %time% seconds")
-                .replace("%time%", String.valueOf(seconds)));
+                .replace("%time%", String.valueOf(seconds))
+                .replace("%reason%", reason)
+        );
     }
 
     @NotNull
@@ -63,15 +79,19 @@ public class MessageConfig extends BukkitConfig {
     }
 
     @NotNull
-    public String getRestartSecondMessage(long second) {
+    public String getRestartSecondMessage(long second, @NotNull String reason) {
         return colorize(getPrefix() + getString("command.restart", "&cThe server will restart in &b%time% seconds")
-                .replace("%time%", String.valueOf(second)));
+                .replace("%time%", String.valueOf(second))
+                .replace("%reason%", reason)
+        );
     }
 
     @NotNull
-    public String getRestartTimeMessage() {
+    public String getRestartTimeMessage(@NotNull String reason) {
         return colorize(getPrefix() + getString("command.time", "&cThe server will restart at &b%time%")
-                .replace("%time%", plugin.getRestartTimeAsString()));
+                .replace("%time%", plugin.getRestartTimeAsString())
+                .replace("%reason%", reason)
+        );
     }
 
     @NotNull
@@ -99,8 +119,8 @@ public class MessageConfig extends BukkitConfig {
                         "&b /are now&8: &7Restart server now",
                         "&b /are reload&8: &7Reload config.yml and message.yml",
                         "&b /are reschedule&8: &7Schedule the next auto restart",
-                        "&b /are restart {seconds}&8: &7Schedule the restart task",
-                        "&b /are time {HH:mm}&8: &7Schedule the restart task",
+                        "&b /are restart {seconds} {reason}&8: &7Schedule the restart task",
+                        "&b /are time {HH:mm} {reason}&8: &7Schedule the restart task",
                         "&7 "))));
     }
 

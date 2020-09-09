@@ -8,6 +8,7 @@ import net.okocraft.autorestart.timer.BossBarTimer;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class AutoRestartPlugin extends JavaPlugin {
     private GeneralConfig generalConfig;
     private MessageConfig messageConfig;
     private LocalDateTime restartTime;
+    private String restartReason;
 
     @Override
     public void onLoad() {
@@ -108,7 +110,7 @@ public class AutoRestartPlugin extends JavaPlugin {
         }
     }
 
-    public void scheduleRestarting(long seconds) {
+    public void scheduleRestarting(long seconds, @Nullable String reason) {
         cancelAllTask();
 
         CountdownTask task = new CountdownTask(this, seconds);
@@ -116,6 +118,7 @@ public class AutoRestartPlugin extends JavaPlugin {
         scheduleTask(task, 0L);
 
         restartTime = LocalDateTime.now().plusSeconds(seconds);
+        restartReason = reason;
 
         getLogger().info("Restart scheduled: " + getRestartTimeAsString());
     }
@@ -123,6 +126,7 @@ public class AutoRestartPlugin extends JavaPlugin {
     public void scheduleRestarting() {
         cancelAllTask();
         restartTime = generalConfig.getNextAutoRestartTime();
+        restartReason = messageConfig.getScheduledRestartReason();
 
         if (restartTime == null) {
             getLogger().info("Auto restart is not scheduled.");
@@ -148,6 +152,15 @@ public class AutoRestartPlugin extends JavaPlugin {
         }
     }
 
+    @NotNull
+    public String getFormattedRestartReason() {
+        if (restartReason != null) {
+            return messageConfig.getFormattedReason(restartReason);
+        } else {
+            return "";
+        }
+    }
+
     public void scheduleTask(@NotNull Runnable task, long seconds) {
         tasks.add(scheduler.schedule(task, seconds, TimeUnit.SECONDS));
     }
@@ -163,6 +176,7 @@ public class AutoRestartPlugin extends JavaPlugin {
             }
 
             restartTime = null;
+            restartReason = null;
 
             getLogger().info("Restart task was cancelled.");
         }

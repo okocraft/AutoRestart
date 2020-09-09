@@ -137,11 +137,14 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
+        String reason = 2 < args.length ? args[2] : null;
+        String formattedReason = reason != null ? plugin.getMessageConfig().getFormattedReason(reason) : "";
+
         if (!plugin.getGeneralConfig().getSecondsToBroadcast().contains(seconds)) {
-            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartSecondMessage(seconds));
+            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartSecondMessage(seconds, formattedReason));
         }
 
-        plugin.scheduleRestarting(seconds);
+        plugin.scheduleRestarting(seconds, reason);
     }
 
     private void scheduleRestartingTime(@NotNull CommandSender sender, @NotNull String[] args) {
@@ -169,11 +172,13 @@ public class AutoRestartCommand implements CommandExecutor, TabCompleter {
             duration += 86400;
         }
 
+        String reason = 2 < args.length ? args[2] : null;
+        String formattedReason = reason != null ? plugin.getMessageConfig().getFormattedReason(reason) : "";
 
-        plugin.scheduleRestarting(duration);
+        plugin.scheduleRestarting(duration, reason);
 
         if (!plugin.getGeneralConfig().getSecondsToBroadcast().contains(duration)) {
-            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartTimeMessage());
+            plugin.getServer().broadcastMessage(plugin.getMessageConfig().getRestartTimeMessage(formattedReason));
         }
     }
 

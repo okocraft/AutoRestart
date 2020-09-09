@@ -41,7 +41,7 @@ public class CountdownTask implements Runnable {
 
     private void checkBroadcastTime() {
         if (plugin.getGeneralConfig().getSecondsToBroadcast().contains(time)) {
-            String message = plugin.getMessageConfig().getCountdownMessage(time);
+            String message = plugin.getMessageConfig().getCountdownMessage(time, plugin.getFormattedRestartReason());
             plugin.getServer().broadcastMessage(message);
         }
     }
