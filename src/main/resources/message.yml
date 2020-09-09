@@ -2,9 +2,10 @@ prefix: "&8[&6AutoRestart&8]&7 "
 
 restart:
   kick: "Server is restarting. Please wait a little..."
+  reason-format: "&7[&b%reason%&7]"
   countdown:
-    message: "&cThe server will restart in %time% seconds."
-    bossbar: "&eThe server will restart in %time% seconds"
+    message: "&cThe server will restart in %time%s: %reason%"
+    bossbar: "&eThe server will restart in %time%s %reason%"
 
 command:
   cancel: "Restart has been cancelled."
@@ -13,7 +14,7 @@ command:
     not-scheduled: "Restart is not scheduled."
   now: "Restart the server now."
   reload: "AutoRestart is reloading... Please check the server console."
-  restart: "&cThe server will restart in &b%time% seconds"
+  restart: "&cThe server will restart in &b%time%s: %reason%"
   time: "&cThe server will restart at &b%time%"
   no-permission: "You don't have the permission: &b%perm%"
   invalid-arg: "Invalid argument: &b%arg%"
