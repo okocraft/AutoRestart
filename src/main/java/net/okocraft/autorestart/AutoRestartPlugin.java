@@ -131,12 +131,11 @@ public class AutoRestartPlugin extends JavaPlugin {
         if (restartTime == null) {
             getLogger().info("Auto restart is not scheduled.");
         } else {
-            long noticeTime = generalConfig.getDefaultNoticeTime();
+            Duration duration = Duration.between(LocalDateTime.now(), restartTime);
+
+            long noticeTime = Math.min(duration.getSeconds(), generalConfig.getDefaultNoticeTime());
 
             CountdownTask task = new CountdownTask(this, noticeTime);
-
-            Duration duration = Duration.between(LocalDateTime.now(), restartTime.minusSeconds(noticeTime));
-
             scheduleTask(task, duration.getSeconds());
 
             getLogger().info("Auto restart scheduled: " + getRestartTimeAsString());
