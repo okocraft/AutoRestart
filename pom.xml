@@ -6,7 +6,7 @@
 
     <groupId>net.okocraft.autorestart</groupId>
     <artifactId>autorestart</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 
     <name>AutoRestart</name>
     <url>https://github.com/okocraft/AutoRestart</url>
